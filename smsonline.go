@@ -1,4 +1,4 @@
-package smsonline // import "github.com/xjewer/smsonline"
+package smsonline
 
 import (
 	"io/ioutil"
