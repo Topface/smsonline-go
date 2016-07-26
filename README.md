@@ -1,6 +1,7 @@
 ## Go client for SMS Online provider
 
 [![Build Status](https://travis-ci.org/Topface/smsonline-go.svg?branch=master)](https://travis-ci.org/Topface/smsonline-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Topface/smsonline-go)](https://goreportcard.com/report/github.com/Topface/smsonline-go)
 
 Library for sending sms through https://sms-online.com provider
 
