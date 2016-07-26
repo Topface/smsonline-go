@@ -1,8 +1,10 @@
-# SMS Online
+## Go client for SMS Online provider
+
+[![Build Status](https://travis-ci.org/Topface/smsonline-go.svg?branch=master)](https://travis-ci.org/Topface/smsonline-go)
 
 Library for sending sms through https://sms-online.com provider
 
-#Usages
+##Usages
 
 ```go
 func main() {
@@ -27,9 +29,9 @@ func main() {
 * `binary` - text format: 0 - bare text (default), 1 - binary
 * `ack` - acknowledgment: 0 - reporting, 1 - no report (default)
 
-#Authors
+##Authors
  [xjewer](github.com/xjewer)
 
-#Licence
+##Licence
 
 [MIT](/LICENSE)
