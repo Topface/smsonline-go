@@ -27,6 +27,9 @@ func main() {
 * `binary` - text format: 0 - bare text (default), 1 - binary
 * `ack` - acknowledgment: 0 - reporting, 1 - no report (default)
 
+#Authors
+ [xjewer](github.com/xjewer)
+
 #Licence
 
 [MIT](/LICENSE)
