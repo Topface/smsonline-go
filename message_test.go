@@ -18,7 +18,7 @@ func Test_setCharset(t *testing.T) {
 	m.setCharset(Charset)
 
 	if m.charset != Charset {
-		t.Fatalf("Incorect charset, want %s, got %s", Charset, m.charset)
+		t.Fatalf("Incorrect charset, want %s, got %s", Charset, m.charset)
 	}
 }
 
@@ -28,7 +28,7 @@ func Test_setDelay(t *testing.T) {
 	m.setDelay(Delay)
 
 	if m.delay != Delay {
-		t.Fatalf("Incorect delay, want %d, got %d", Delay, m.delay)
+		t.Fatalf("Incorrect delay, want %d, got %d", Delay, m.delay)
 	}
 }
 
@@ -38,7 +38,7 @@ func Test_setDelay2(t *testing.T) {
 	m.setDelay(Delay)
 
 	if m.delay != maxDelay {
-		t.Fatalf("Incorect delay, want %d, got %d", maxDelay, m.delay)
+		t.Fatalf("Incorrect delay, want %d, got %d", maxDelay, m.delay)
 	}
 }
 
@@ -48,7 +48,7 @@ func Test_setAck(t *testing.T) {
 	m.setAck(Ack)
 
 	if m.reportType != typeNoReport {
-		t.Fatalf("Incorect report type, want %d, got %d", typeNoReport, m.reportType)
+		t.Fatalf("Incorrect report type, want %d, got %d", typeNoReport, m.reportType)
 	}
 }
 
@@ -58,7 +58,7 @@ func Test_setAck2(t *testing.T) {
 	m.setAck(Ack)
 
 	if m.reportType != typeReport {
-		t.Fatalf("Incorect report type, want %d, got %d", typeReport, m.reportType)
+		t.Fatalf("Incorrect report type, want %d, got %d", typeReport, m.reportType)
 	}
 }
 
@@ -68,7 +68,7 @@ func Test_setBinaryType(t *testing.T) {
 	m.setBinaryType(Binary)
 
 	if m.textType != typeText {
-		t.Fatalf("Incorect text type, want %d, got %d", typeText, m.textType)
+		t.Fatalf("Incorrect text type, want %d, got %d", typeText, m.textType)
 	}
 }
 
@@ -78,7 +78,7 @@ func Test_setBinaryType2(t *testing.T) {
 	m.setBinaryType(Binary)
 
 	if m.textType != typeBinary {
-		t.Fatalf("Incorect text type, want %d, got %d", typeBinary, m.textType)
+		t.Fatalf("Incorrect text type, want %d, got %d", typeBinary, m.textType)
 	}
 }
 
@@ -87,7 +87,7 @@ func Test_getSign(t *testing.T) {
 	for _, testData := range tableSignTest {
 		sign := m.getSign(testData.user, testData.secret)
 		if sign != testData.out {
-			t.Errorf("Incorect sign, want %s, got %s", testData.out, sign)
+			t.Errorf("Incorrect sign, want %s, got %s", testData.out, sign)
 		}
 	}
 
@@ -101,14 +101,14 @@ func Test_getMessageData(t *testing.T) {
 	data := m.getMessageData("user", "secret")
 
 	if data.Get("txt") != Text {
-		t.Errorf("Incorect txt data, want %s, got %s", Text, data.Get("txt"))
+		t.Errorf("Incorrect txt data, want %s, got %s", Text, data.Get("txt"))
 	}
 
 	if data.Get("from") != From {
-		t.Errorf("Incorect from data, want %s, got %s", From, data.Get("from"))
+		t.Errorf("Incorrect from data, want %s, got %s", From, data.Get("from"))
 	}
 
 	if data.Get("phones[]") != To {
-		t.Errorf("Incorect phones[] data, want %s, got %s", To, data.Get("phones[]"))
+		t.Errorf("Incorrect phones[] data, want %s, got %s", To, data.Get("phones[]"))
 	}
 }
