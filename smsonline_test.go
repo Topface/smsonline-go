@@ -1,11 +1,12 @@
 package smsonline
 
 import (
+	"net/http"
 	"testing"
 )
 
 func createClient() *SmsOnline {
-	return NewSmsOnlineClientCustom("test", "secret", "", baseURL)
+	return NewSmsOnlineClientCustom("test", "secret", "", baseURL, http.DefaultClient)
 }
 
 func TestSmsOnline_SendSms(t *testing.T) {
