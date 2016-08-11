@@ -7,55 +7,63 @@ import (
 )
 
 const (
+	// baseURL - default smsonline endpoint
 	baseURL = "https://bulk.sms-online.com"
 )
 
 // SmsOnline is sms online client
 type SmsOnline struct {
-	username string
-	secret   string
-	charset  string
-	baseURL  string
+	username   string
+	secret     string
+	charset    string
+	baseURL    string
+	httpClient *http.Client
 }
 
 // NewSmsOnlineClient initializes new SmsOnline client
-func NewSmsOnlineClient(username, secret, charset string) *SmsOnline {
+func NewSmsOnlineClient(username, secret, charset string, httpClient *http.Client) *SmsOnline {
 	if charset == "" {
 		charset = defaultCharset
 	}
+
+	if httpClient == nil {
+		httpClient = http.DefaultClient
+	}
+
 	return &SmsOnline{
-		username: username,
-		secret:   secret,
-		charset:  charset,
-		baseURL:  baseURL,
+		username:   username,
+		secret:     secret,
+		charset:    charset,
+		baseURL:    baseURL,
+		httpClient: httpClient,
 	}
 }
 
 // NewSmsOnlineClientCustom initializes new SmsOnline client with custom BaseUrl
-func NewSmsOnlineClientCustom(username, secret, charset, url string) *SmsOnline {
-	client := NewSmsOnlineClient(username, secret, charset)
+func NewSmsOnlineClientCustom(username, secret, charset, url string, httpClient *http.Client) *SmsOnline {
+	client := NewSmsOnlineClient(username, secret, charset, httpClient)
 	client.baseURL = url
 	return client
 }
 
 // SendSimpleSms send simple sms
-func (client *SmsOnline) SendSimpleSms(from, to, text, charset string) (*SmsResponse, error) {
-	return client.SendSms(from, to, text, charset, 0, false, false)
+func (c *SmsOnline) SendSimpleSms(from, to, text, charset string) (*SmsResponse, error) {
+	return c.SendSms(from, to, text, charset, 0, false, false)
 }
 
 // SendSms send sms with some additional options such as delay, ack, binary
-func (client *SmsOnline) SendSms(from, to, text, charset string, delay int, ack, binary bool) (*SmsResponse, error) {
+func (c *SmsOnline) SendSms(from, to, text, charset string, delay int, ack, binary bool) (*SmsResponse, error) {
 	message := makeSms(from, text, to)
 	message.setAck(ack)
 	message.setDelay(delay)
 	message.setBinaryType(binary)
 
 	if charset == "" {
-		charset = client.charset
+		charset = c.charset
 	}
 	message.setCharset(charset)
 
-	response, err := client.send(message)
+	response, err := c.send(message)
 	if err != nil {
 		return nil, err
 	}
@@ -70,13 +78,13 @@ func (client *SmsOnline) SendSms(from, to, text, charset string, delay int, ack,
 }
 
 // send data to sms online
-func (client *SmsOnline) send(m message) (*http.Response, error) {
-	messageData := m.getMessageData(client.username, client.secret).Encode()
-	req, err := http.NewRequest("POST", client.baseURL, strings.NewReader(messageData))
+func (c *SmsOnline) send(m message) (*http.Response, error) {
+	messageData := m.getMessageData(c.username, c.secret).Encode()
+	req, err := http.NewRequest("POST", c.baseURL, strings.NewReader(messageData))
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Add("Content-Type", "application/text")
 
-	return http.DefaultClient.Do(req)
+	return c.httpClient.Do(req)
 }
