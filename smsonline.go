@@ -1,14 +1,15 @@
 package smsonline
 
 import (
+	"bytes"
 	"io/ioutil"
 	"net/http"
-	"strings"
+	"strconv"
 )
 
 const (
 	// baseURL - default smsonline endpoint
-	baseURL = "https://bulk.sms-online.com"
+	baseURL = "https://bulk.sms-online.com/"
 )
 
 // SmsOnline is sms online client
@@ -48,15 +49,14 @@ func NewSmsOnlineClientCustom(username, secret, charset, url string, httpClient 
 
 // SendSimpleSms send simple sms
 func (c *SmsOnline) SendSimpleSms(from, to, text, charset string) (*SmsResponse, error) {
-	return c.SendSms(from, to, text, charset, 0, false, false)
+	return c.SendSms(from, to, text, charset, 0, false)
 }
 
 // SendSms send sms with some additional options such as delay, ack, binary
-func (c *SmsOnline) SendSms(from, to, text, charset string, delay int, ack, binary bool) (*SmsResponse, error) {
+func (c *SmsOnline) SendSms(from, to, text, charset string, delay int, ack bool) (*SmsResponse, error) {
 	message := makeSms(from, text, to)
 	message.setAck(ack)
 	message.setDelay(delay)
-	message.setBinaryType(binary)
 
 	if charset == "" {
 		charset = c.charset
@@ -80,11 +80,12 @@ func (c *SmsOnline) SendSms(from, to, text, charset string, delay int, ack, bina
 // send data to sms online
 func (c *SmsOnline) send(m message) (*http.Response, error) {
 	messageData := m.getMessageData(c.username, c.secret).Encode()
-	req, err := http.NewRequest("POST", c.baseURL, strings.NewReader(messageData))
+	req, err := http.NewRequest("POST", baseURL, bytes.NewBufferString(messageData))
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Content-Type", "application/text")
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Add("Content-Length", strconv.Itoa(len(messageData)))
 
 	return c.httpClient.Do(req)
 }

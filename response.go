@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 )
 
+// response format - http://smsonline-bulk.readthedocs.io/en/latest/bulk_sms.html
 const (
 	// CodeOk successful request
 	CodeOk = 0
@@ -21,9 +22,8 @@ const (
 
 // SmsResponse is a sms online response data
 type SmsResponse struct {
-	Code       int               `xml:"code"`
-	Message    string            `xml:"tech_message"`
-	MessageIds map[string]string `xml:"msg_id"`
+	Code    int    `xml:"code"`
+	Message string `xml:"tech_message"`
 }
 
 // make sms online response
