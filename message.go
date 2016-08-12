@@ -13,10 +13,6 @@ const (
 	typeReport   = 0
 	typeNoReport = 1
 
-	// type of text format - bare text or binary
-	typeText   = 0
-	typeBinary = 1
-
 	// max message delay
 	maxDelay       = 86400
 	defaultCharset = "UTF-8"
@@ -28,7 +24,6 @@ type message struct {
 	text       string
 	delay      int
 	reportType int
-	textType   int
 	charset    string
 }
 
@@ -39,7 +34,6 @@ func makeSms(from, text string, to string) message {
 		text:       text,
 		to:         to,
 		reportType: typeNoReport,
-		textType:   typeText,
 	}
 }
 
@@ -52,7 +46,7 @@ func (m *message) setCharset(charset string) {
 
 // set delay
 func (m *message) setDelay(delay int) {
-	if delay > 0 && delay <= maxDelay {
+	if delay >= 0 && delay <= maxDelay {
 		m.delay = delay
 	} else {
 		m.delay = maxDelay
@@ -65,15 +59,6 @@ func (m *message) setAck(ack bool) {
 		m.reportType = typeReport
 	} else {
 		m.reportType = typeNoReport
-	}
-}
-
-// set binary text type
-func (m *message) setBinaryType(binary bool) {
-	if binary {
-		m.textType = typeBinary
-	} else {
-		m.textType = typeText
 	}
 }
 
@@ -96,9 +81,8 @@ func (m *message) getMessageData(user, secret string) url.Values {
 	formValues.Set("charset", m.charset)
 	formValues.Set("delay", strconv.Itoa(m.delay))
 	formValues.Set("txt", m.text)
-	formValues.Set("hex", strconv.Itoa(m.textType))
 	formValues.Set("dlr", strconv.Itoa(m.reportType))
-	formValues.Add("phones[]", m.to)
+	formValues.Set("phone", m.to)
 	formValues.Set("user", user)
 	formValues.Set("from", m.from)
 	formValues.Set("sign", m.getSign(user, secret))

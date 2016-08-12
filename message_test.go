@@ -62,26 +62,6 @@ func Test_setAck2(t *testing.T) {
 	}
 }
 
-func Test_setBinaryType(t *testing.T) {
-	const Binary = false
-	m := message{}
-	m.setBinaryType(Binary)
-
-	if m.textType != typeText {
-		t.Fatalf("Incorrect text type, want %d, got %d", typeText, m.textType)
-	}
-}
-
-func Test_setBinaryType2(t *testing.T) {
-	const Binary = true
-	m := message{}
-	m.setBinaryType(Binary)
-
-	if m.textType != typeBinary {
-		t.Fatalf("Incorrect text type, want %d, got %d", typeBinary, m.textType)
-	}
-}
-
 func Test_getSign(t *testing.T) {
 	m := makeSms("from", "text", "to")
 	for _, testData := range tableSignTest {
@@ -108,7 +88,7 @@ func Test_getMessageData(t *testing.T) {
 		t.Errorf("Incorrect from data, want %s, got %s", From, data.Get("from"))
 	}
 
-	if data.Get("phones[]") != To {
-		t.Errorf("Incorrect phones[] data, want %s, got %s", To, data.Get("phones[]"))
+	if data.Get("phone") != To {
+		t.Errorf("Incorrect phone data, want %s, got %s", To, data.Get("phone"))
 	}
 }
